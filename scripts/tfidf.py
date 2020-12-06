@@ -4,6 +4,7 @@ import pandas as pd
 import itertools
 import re
 from collections import Counter
+from nltk.corpus import stopwords
 
 
 def tokenize(post):
@@ -11,7 +12,8 @@ def tokenize(post):
     post = re.sub(r'\W', ' ', post)
     # remove all spaces, tabs or newline characters
     post = re.sub(r'\s+', ' ', post)
-    print(post)
+    # remove all digits
+    post = re.sub("^\d+\s|\s\d+\s|\s\d+$", " ", post) 
     return [x.lower() for x in re.split("[^a-zA-Z']", post)]
 
 def counter_to_tf(counter):
@@ -34,9 +36,12 @@ def main():
     df = pd.read_csv(sys.stdin)
     all_codings = set(df["topic"])
     counters = {c: Counter() for c in all_codings}
+    stop_words = set(stopwords.words('english'))
 
     for post, coding in zip(df["title"], df["topic"]):
         tokenized_post = tokenize(post)
+        # delete stop words
+        tokenized_post = [w for w in tokenized_post if not w in stop_words]
         for tok in tokenized_post:
             counters[coding].update((tok, 1))
 
