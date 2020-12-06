@@ -9,6 +9,9 @@ from collections import Counter
 def tokenize(post):
     # remove all the special characters
     post = re.sub(r'\W', ' ', post)
+    # remove all spaces, tabs or newline characters
+    post = re.sub(r'\s+', ' ', post)
+    print(post)
     return [x.lower() for x in re.split("[^a-zA-Z']", post)]
 
 def counter_to_tf(counter):
