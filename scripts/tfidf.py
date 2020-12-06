@@ -5,10 +5,11 @@ import itertools
 import re
 from collections import Counter
 
+
 def tokenize(post):
     # remove all the special characters
     post = re.sub(r'\W', ' ', post)
-    return [x.lower() for x in post.split(" ")] 
+    return [x.lower() for x in re.split("[^a-zA-Z']", post)]
 
 def counter_to_tf(counter):
     total = sum(counter.values())
