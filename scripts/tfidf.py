@@ -25,10 +25,10 @@ def counters_to_tfidf(counters):
 
 def main():
     df = pd.read_csv(sys.stdin)
-    all_codings = set(df["coding"])
+    all_codings = set(df["topic"])
     counters = {c: Counter() for c in all_codings}
 
-    for tweet, coding in zip(df["title"], df["coding"]):
+    for tweet, coding in zip(df["title"], df["topic"]):
         tokenized_tweet = tokenize(tweet)
         for tok in tokenized_tweet:
             counters[coding].update((tok, 1))

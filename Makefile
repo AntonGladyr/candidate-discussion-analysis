@@ -9,3 +9,9 @@ data/politics/extracted.tsv: scripts/extract_to_tsv.py
 
 data/merged.tsv: scripts/merge_datasets.py data/conservative/extracted.tsv data/politics/extracted.tsv
 	python3 "$<" -i data/conservative/extracted.tsv data/politics/extracted.tsv -o "$@" -k Biden -k Trump
+
+data/annotated_tweets.csv:
+	curl -L "https://docs.google.com/spreadsheets/d/1WEDy-NSEEJPNQuCFA0aFu5iG4qp4ZUd87n3ghJhfoF0/export?format=csv&gid=2113791825" -o "data/annotated_tweets.csv"
+
+data/tfidf.txt: data/annotated_tweets.csv
+	< "$<" python3 scripts/tfidf.py
