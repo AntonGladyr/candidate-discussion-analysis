@@ -7,7 +7,7 @@ import random
 def main():
     # Parse arguments
     argparse_root = argparse.ArgumentParser(description="Extract posts from files")
-    
+
     argparse_root.add_argument(
             '-i',
             '--input',
@@ -32,29 +32,30 @@ def main():
     )
 
     args = argparse_root.parse_args()
-     
+
     # check if the input json files exist
     for json_file in args.input:
         json_file_exists = os.path.isfile(json_file)
-    
+
         if not json_file_exists:
             print(f"json {json_file} file does not exist")
             exit()
-    
+
     posts_list = []
+    data_list = []
     # Load posts from files
     for json_file in args.input:
-        with open(json_file) as f: 
-            data = json.loads(f.read()) 
-            data_list.append(data)    
-   
+        with open(json_file) as f:
+            data = json.loads(f.read())
+            data_list.append(data)
+
     for data in data_list:
         for post in data:
-            posts_list.append(post)    
-   
-    # Delete duplicates from posts list 
+            posts_list.append(post)
+
+    # Delete duplicates from posts list
     posts = {}
-    for post in posts_list: 
+    for post in posts_list:
         if post['name'] not in posts:
             posts[post['name']] = {
                     'name': post['name'],
@@ -62,8 +63,8 @@ def main():
                     'subreddit': post['subreddit']
             }
 
-    posts = list(posts.values()) 
-    
+    posts = list(posts.values())
+
     # If after deleting duplicates
     # there are less posts than num_posts_to_output
     if len(posts) < args.num_posts_to_output:
@@ -87,7 +88,7 @@ def main():
 
     if dir_path and not os.path.exists(dir_path):
         os.makedirs(dir_path)
- 
+
     with open(args.output, "w") as f:
         f.write(f'name\ttitle\tsubreddit\ttopic\n')
         for post in posts:
