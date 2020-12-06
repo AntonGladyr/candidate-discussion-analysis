@@ -13,5 +13,17 @@ data/merged.tsv: scripts/merge_datasets.py data/conservative/extracted.tsv data/
 data/annotated_tweets.csv:
 	curl -L "https://docs.google.com/spreadsheets/d/1WEDy-NSEEJPNQuCFA0aFu5iG4qp4ZUd87n3ghJhfoF0/export?format=csv&gid=2113791825" -o "data/annotated_tweets.csv"
 
-data/tfidf.txt: data/annotated_tweets.csv
+data/tfidf.txt: data/annotated_tweets.csv scripts/tfidf.py
 	< "$<" python3 scripts/tfidf.py > "$@"
+
+data/politics/tfidf.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",politics," >> tmp
+	< tmp python3 scripts/tfidf.py > "$@"
+	rm tmp
+
+data/conservative/tfidf.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",Conservative," >> tmp
+	< tmp python3 scripts/tfidf.py > "$@"
+	rm tmp
