@@ -14,4 +14,4 @@ data/annotated_tweets.csv:
 	curl -L "https://docs.google.com/spreadsheets/d/1WEDy-NSEEJPNQuCFA0aFu5iG4qp4ZUd87n3ghJhfoF0/export?format=csv&gid=2113791825" -o "data/annotated_tweets.csv"
 
 data/tfidf.txt: data/annotated_tweets.csv
-	< "$<" python3 scripts/tfidf.py
+	< "$<" python3 scripts/tfidf.py > "$@"
