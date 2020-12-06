@@ -45,8 +45,12 @@ def main():
     # Load posts from files
     for json_file in args.input:
         with open(json_file) as f: 
-            posts_list: List[dict] = json.loads(f.read()) 
-            posts_list.extend(posts_list)    
+            data = json.loads(f.read()) 
+            data_list.append(data)    
+   
+    for data in data_list:
+        for post in data:
+            posts_list.append(post)    
    
     # Delete duplicates from posts list 
     posts = {}
