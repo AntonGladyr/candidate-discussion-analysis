@@ -2,10 +2,11 @@ import math
 import sys
 import pandas as pd
 import itertools
+import re
 from collections import Counter
 
 def tokenize(tweet):
-    return [x.lower() for x in tweet.split(" ")]
+    return [x.lower() for x in re.split("[^a-zA-Z']",tweet)]
 
 def counter_to_tf(counter):
     total = sum(counter.values())
