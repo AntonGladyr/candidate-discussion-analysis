@@ -2,10 +2,13 @@ import math
 import sys
 import pandas as pd
 import itertools
+import re
 from collections import Counter
 
-def tokenize(tweet):
-    return [x.lower() for x in tweet.split(" ")]
+def tokenize(post):
+    # remove all the special characters
+    post = re.sub(r'\W', ' ', post)
+    return [x.lower() for x in post.split(" ")] 
 
 def counter_to_tf(counter):
     total = sum(counter.values())
@@ -25,12 +28,12 @@ def counters_to_tfidf(counters):
 
 def main():
     df = pd.read_csv(sys.stdin)
-    all_codings = set(df["coding"])
+    all_codings = set(df["topic"])
     counters = {c: Counter() for c in all_codings}
 
-    for tweet, coding in zip(df["title"], df["coding"]):
-        tokenized_tweet = tokenize(tweet)
-        for tok in tokenized_tweet:
+    for post, coding in zip(df["title"], df["topic"]):
+        tokenized_post = tokenize(post)
+        for tok in tokenized_post:
             counters[coding].update((tok, 1))
 
     counters_to_tfidf(list(counters.values()))
