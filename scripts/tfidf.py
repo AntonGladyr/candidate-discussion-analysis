@@ -9,9 +9,9 @@ from nltk.corpus import stopwords
 
 stop_words = set(stopwords.words('english'))
 
-def preprocess(post): 
+def preprocess(post):
     # Converting to lowercase
-    post = post.lower() 
+    post = post.lower()
 
     # remove all the special characters
     post = re.sub(r'\W', ' ', post)
@@ -21,11 +21,11 @@ def preprocess(post):
 
     #remove single characters
     post = ' '.join([w for w in post.split() if len(w) > 1])
-    
+
      # remove all spaces, tabs or newline characters
     post = re.sub(r'\s+', ' ', post)
 
-    # delete stop words 
+    # delete stop words
     tokenized_post = [w for w in post.split() if not w in stop_words]
 
     return ' '.join(tokenized_post)
@@ -36,11 +36,11 @@ def tokenize(post):
 
 def counter_to_tf(counter):
     total = sum(counter.values())
-    for k in counter: 
-        counter[k] = float(counter[k]) / total 
+    for k in counter:
+        counter[k] = float(counter[k]) / total
 
 def idf_from_counters(counters):
-    allwords = set(itertools.chain(w for c in counters for w in c.keys())) 
+    allwords = set(itertools.chain(w for c in counters for w in c.keys()))
     return {w: math.log(len(counters) / sum(1 if w in c else 0 for c in counters)) for w in allwords}
 
 def counters_to_tfidf(counters):
@@ -58,12 +58,15 @@ def main():
     for post, coding in zip(df["title"], df["topic"]):
         post = preprocess(post)
         tokenized_post = tokenize(post)
-        for tok in tokenized_post:
+        max_ngram = os.getenv("NGRAM") or 1
+        ngrams = list(zip(*(tokenized_post[i:] for i in range(0, int(max_ngram)))))
+        for tok in ngrams:
             counters[coding].update((tok, 1))
+
 
     counters_to_tfidf(list(counters.values()))
 
-    for k, c in counters.items():
+    for k, c in sorted(counters.items()):
         print("\n==================")
         print(k)
         for word, tfidf in c.most_common(10):

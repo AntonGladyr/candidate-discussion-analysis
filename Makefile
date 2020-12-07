@@ -22,8 +22,32 @@ data/politics/tfidf.txt: data/annotated_tweets.csv scripts/tfidf.py
 	< tmp python3 scripts/tfidf.py > "$@"
 	rm tmp
 
+data/politics/tfidf-2.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",politics," >> tmp
+	< tmp NGRAM=2 python3 scripts/tfidf.py > "$@"
+	rm tmp
+
+data/politics/tfidf-3.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",politics," >> tmp
+	< tmp NGRAM=3 python3 scripts/tfidf.py > "$@"
+	rm tmp
+
 data/conservative/tfidf.txt: data/annotated_tweets.csv scripts/tfidf.py
 	head -n 1 "$<" > tmp
 	< "$<" grep ",Conservative," >> tmp
 	< tmp python3 scripts/tfidf.py > "$@"
+	rm tmp
+
+data/conservative/tfidf-2.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",Conservative," >> tmp
+	< tmp NGRAM=2 python3 scripts/tfidf.py > "$@"
+	rm tmp
+
+data/conservative/tfidf-3.txt: data/annotated_tweets.csv scripts/tfidf.py
+	head -n 1 "$<" > tmp
+	< "$<" grep ",Conservative," >> tmp
+	< tmp NGRAM=3 python3 scripts/tfidf.py > "$@"
 	rm tmp
