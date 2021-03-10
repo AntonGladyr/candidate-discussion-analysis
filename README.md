@@ -1,5 +1,13 @@
 # Measuring perspectives on election legitimacy
 
+## Overview
+This project aims to understand candidate discussion in the days following the 2020 US election. The project focuses on the perceptions of election legitimacy,  specifically:
+
+* The salient topics discussed around each candidate and what each topic primarily concerned
+* Relative engagement with those topics among liberals and conservatives
+
+The analysis drew on the Reddit posts (not comments) from two subreddits: _/r/politics_ and _/r/conservative_. While not perfect, these have been found to roughly line up with liberal and conservative US communities. We collected 1,000 posts from each subreddit over 3 days in early November, 2020.
+
 ## How to calculate top ten words per topic
 Don't forget your `pip install -r requirements.txt`, and then try running:
 
